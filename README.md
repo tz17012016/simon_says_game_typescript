@@ -1,10 +1,59 @@
-# simon_says_game_typescript
+# Simon Says Game react-native-Typescript 
 
-simon says game typescript
 
-Simon Says Game 1.0.0:
-///////////////////////////
+## Simon Says Game 
 
-Features:
+The technologies that used in this project:
+
+- React Native CLI.
+- Typescript, hooks.
+- redux and redux pressit for the app's state management.
+- react-navigation v5.
+- react native sound
+
+# Features
 
 - the app support Darke mod on the device.
+- simon game.
+- list  of the 10 best results  in the winner bord
+
+
+## Installation
+```
+npm instal
+
+yarn
+
+```
+## Runing the App in Debug Mode On Android Or Ios
+
+### Android: 
+```
+react-native run-android
+```
+### Ios:
+```
+react-native run-ios
+```
+
+
+## Build
+
+Build the app by using the raect native cli
+
+```
+cd android && gradlew.bat clean && gradlew.bat assembleRelease
+```
+
+# preview of the app screns:
+
+
+# Game Screen
+
+![image](https://user-images.githubusercontent.com/71942613/155583732-3d7ea507-e8af-4abd-84ed-84fb0d732cb5.png)
+
+
+# Winners Screen
+
+![image](https://user-images.githubusercontent.com/71942613/155583656-09db2fc8-ff0c-4039-895d-6287be1c05c7.png)
+
