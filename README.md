@@ -7,9 +7,10 @@ The technologies that used in this project:
 
 - React Native CLI.
 - Typescript, hooks.
-- redux and redux pressit for the app's state management.
-- react-navigation v5.
-- react native sound
+- Redux and Redux Persist for the app's state management.
+- React-navigation v5.
+- React-native-sound
+- React-native-use-sound-hook
 
 # Features
 
