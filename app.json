@@ -1,0 +1,14 @@
+{
+  "name": "simonSaysGame",
+  "icon": "./assets/img/logo.png",
+  "displayName": "Simon Says Game",
+  "description": "A Simon Says Game",
+  "sdkVersion": "30.0.2",
+  "version": "1.0.0",
+  "ios": {
+    "bundeleIdentifier": "com.tz17012016.simonsaysgame"
+  },
+  "android": {
+    "package": "com.tz17012016.simonsaysgame"
+  }
+}
