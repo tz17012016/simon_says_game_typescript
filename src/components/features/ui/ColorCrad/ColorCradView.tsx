@@ -2,8 +2,6 @@ import React from 'react';
 import {StyleSheet, Pressable, GestureResponderEvent} from 'react-native';
 import useSound from 'react-native-use-sound';
 import {Color} from '../../../../app/redux/types/types';
-import {flashColorButton} from '../../../../utils/util';
-import {BackgroundColor} from './types/types';
 
 interface ColorCradViewProps {
   color: Color;
@@ -30,56 +28,42 @@ const ColorCradView: React.FC<ColorCradViewProps> = ({
   Disable,
   onPress,
 }) => {
-  const [ColorFlash, setColorFlash] = React.useState<BackgroundColor | null>();
   //indicate if the flash color is flashing and make sound accordingly
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [soundName, setSoundName] = React.useState('');
-  const [play, pause, stop, data] = useSound(
-    isPlaying === true ? soundName : '',
-    {
-      volume: 1, //set the volume to the hightes volume of the device
-      interrupt: false, //the sound wont interruptif it false
-    },
-  );
-  //play the sound
-  const handlePlay = () => {
-    if (data.isPlaying) pause();
-    else play();
-  };
+  const [play, pause, stop, data] = useSound(color.soundValue, {
+    volume: 1, //set the volume to the hightes volume of the device
+    interrupt: false, //the sound wont interruptif it false
+  });
+
   //indicate the flash color object and handle the sound
   //state and the flashe state if the color mache
+
   React.useEffect(() => {
-    const runFlash = async () => {
-      const getFlash: BackgroundColor = await flashColorButton(
-        color,
-        flashColor,
-      );
+    const runFlash = () => {
       flashColor === color.value
-        ? isPlaying === true
-          ? null
-          : (setIsPlaying(true), setSoundName(color.soundValue))
-        : isPlaying === false
-        ? null
+        ? (setIsPlaying(true), setSoundName(color.soundValue))
         : (setIsPlaying(false), setSoundName(''));
-      setColorFlash(() => getFlash);
     };
     runFlash();
-  }, [flashColor, isPlaying, soundName]);
+  }, [flashColor]);
+
   //indicate if it flashing state has changed and play sound accordingly
   React.useEffect(() => {
-    const runHandlePlay = () => {
-      !isPlaying ? handlePlay() : null;
-    };
-    runHandlePlay();
-  }, [isPlaying]);
+    soundName.length > 0 && isPlaying === true
+      ? data.isPlaying
+        ? pause()
+        : play()
+      : null;
+  }, [isPlaying, soundName]);
+  //the color to be flashe
+  let tempFlashColor: any =
+    flashColor === color.value ? flashColor : {backgroundColor: color.color};
 
   return (
     <Pressable
       disabled={Disable}
-      style={[
-        ColorFlash ? ColorFlash : {backgroundColor: color.color},
-        styles.button,
-      ]}
+      style={[tempFlashColor, styles.button]}
       onPress={onPress}
     />
   );
