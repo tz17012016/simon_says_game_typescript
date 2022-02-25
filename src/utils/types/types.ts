@@ -66,12 +66,6 @@ export type RunSimonColors = (
 export type GetTenBestScores = (key: string, arr: Users) => Users;
 export type GetRandomColorByIndex = (arr: Colors) => Colors;
 export type GetArrRevers = (arr: any) => any;
-export type FlashColorButton = (
-  color: Color,
-  flashColor: string,
-) => Promise<{
-  backgroundColor: string;
-}>;
-export type FindFlashColor = (color: Color, flashColor: string) => string;
+
 export type FindByColor = (color: Color, arr: Colors) => Color | any;
 export type Timeout = (ms: number) => any;

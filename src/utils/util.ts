@@ -5,8 +5,6 @@ import {
   CardClickHandle,
   DisplayColors,
   FindByColor,
-  FindFlashColor,
-  FlashColorButton,
   GetArrRevers,
   GetRandomColorByIndex,
   GetTenBestScores,
@@ -31,36 +29,7 @@ export const timeout: Timeout = ms => {
 export const findByColor: FindByColor = (color, arr) => {
   return arr.find((cl: Color) => cl.color === color.color);
 };
-/**
- * A helper function that find Flash Color from the array of colors
- * @param color
- * @param flashColor
- * @returns flash Color string if it match the color
- *  or return the given color string from the argoments
- */
-export const findFlashColor: FindFlashColor = (color, flashColor) => {
-  const secColor: Color = findByColor(color, ColorsArr);
-  if (flashColor === secColor?.value) {
-    return flashColor;
-  } else {
-    return color.color;
-  }
-};
-/**
- *  A function that receives a color object and a flash Color string
- *  and has a timout of 1000 ms to let the color to flash and then it
- *  returns a style object with the selected background color
- * @param color
- * @param flashColor
- * @returns a style object with the selected background color
- */
-export const flashColorButton: FlashColorButton = async (color, flashColor) => {
-  await timeout(1000);
-  const colorStyles = {
-    backgroundColor: findFlashColor(color, flashColor),
-  };
-  return colorStyles;
-};
+
 /**
  *A function that receives an array and returns a new array in reverse order
  * @param arr
@@ -166,21 +135,29 @@ export const cardClickHandle: CardClickHandle = async (
   setSuccess,
   setIsPlaying,
 ) => {
+  //if it is the user now playing
   if (!state.isDisplay && state.userPlay) {
     const copyUserColors = [...state.userColors];
     const lastColor = copyUserColors.pop();
     const newFlashColor: Color = findByColor(color, ColorsArr);
     setFlashColor(newFlashColor.value);
+    //if the user lost the game
+    if (color !== lastColor) {
+      //set the user his finele score before the game ends
+      setSuccess(false);
+      setIsPlaying(true);
+      await timeout(1000);
+      setFlashColor('');
+      setIsPlaying(false);
+      dispatch({
+        type: PLAYER_ACTION_TYPES.SET_USER_FINISH_SCORE,
+        payload: state.colors.length,
+      });
+    }
+    //if the user steal playing and his winning
     if (color === lastColor) {
-      //if the user steal playing
-      if (copyUserColors.length) {
-        //get all the colors that in the array
-        dispatch({
-          type: PLAYER_ACTION_TYPES.SET_USER_COLORS,
-          payload: copyUserColors,
-        });
-      } else {
-        //set the score of the user and get the user to the next level
+      //set the score of the user and get the user to the next level
+      if (!copyUserColors.length) {
         await timeout(1000);
         setIsPlaying(true);
         setFlashColor('');
@@ -196,19 +173,15 @@ export const cardClickHandle: CardClickHandle = async (
         dispatch({type: PLAYER_ACTION_TYPES.SET_USER_COLORS_RESET});
         await timeout(2000);
       }
-      //if the user lost the game
-    } else {
-      //set the user his finele score before the game ends
-      setSuccess(false);
-      setIsPlaying(true);
-      await timeout(1000);
-      setFlashColor('');
-      setIsPlaying(false);
-      dispatch({
-        type: PLAYER_ACTION_TYPES.SET_USER_FINISH_SCORE,
-        payload: state.colors.length,
-      });
+      //get all the colors that in the array
+      if (copyUserColors.length) {
+        dispatch({
+          type: PLAYER_ACTION_TYPES.SET_USER_COLORS,
+          payload: copyUserColors,
+        });
+      }
     }
+    //open the modle
     await timeout(1000);
     setFlashColor('');
     setShowModal(true);

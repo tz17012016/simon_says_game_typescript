@@ -71,11 +71,10 @@ const GameScreen: React.FC<GameScreenProps> = () => {
    *play the sound that geiven in the sound name
    */
   const handlePlay = () => {
-    if (data.isPlaying) pause();
-    else play();
+    data.isPlaying ? pause() : play();
   };
   //if the ColorCradView butoun will be Disable if its the user tourn or not
-  const Disable: boolean = !state.isDisplay && state.userPlay ? false : true;
+  const Disable: boolean = state.isDisplay && state.userPlay ? true : false;
 
   //////////////////////////////////////////////////////////////////////////////////
   /**
@@ -151,7 +150,7 @@ const GameScreen: React.FC<GameScreenProps> = () => {
   return (
     <View style={styles.gameContainer}>
       <View style={styles.gameTitleContainer}>
-        <Text style={styles.title}>Game Simon Says</Text>
+        <Text style={styles.title}>Simon Says....</Text>
       </View>
       <View style={styles.gameContainerAliment}>
         <View style={styles.colorCardContainer}>
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
   colorCardContainer: {
     maxWidth: 270,
     opacity: 0.8,
-    backgroundColor: '#b3b3ff',
+    backgroundColor: '#ccccff',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
