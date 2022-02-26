@@ -1,6 +1,7 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
+import {ScaledSheet} from 'react-native-size-matters';
 //coustom dark mod
-const darkMode = StyleSheet.create({
+const darkMode = ScaledSheet.create({
   container: {
     flex: 1,
     position: 'relative',
@@ -33,8 +34,8 @@ const darkMode = StyleSheet.create({
     backgroundColor: '#4d4d4d',
     borderRadius: 20,
     alignSelf: 'center',
-    paddingHorizontal: 14,
-    paddingBottom: 30,
+    paddingHorizontal: '14@ms',
+    paddingBottom: '30@ms',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -46,17 +47,17 @@ const darkMode = StyleSheet.create({
   },
   hr: {
     width: '100%',
-    height: 2,
+    height: '2@ms',
     backgroundColor: '#262626',
-    marginTop: 6,
+    marginTop: '6@ms',
   },
   input: {
     width: '100%',
     fontFamily: 'ComicSansMSBold',
-    height: 40,
+    height: '40@ms',
     backgroundColor: '#595959',
     borderRadius: 4,
-    paddingHorizontal: 10,
+    paddingHorizontal: '10@ms',
   },
 });
 

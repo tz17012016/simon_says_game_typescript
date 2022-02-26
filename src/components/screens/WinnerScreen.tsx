@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import useDispalyTenBestScore from '../../app/hooks/DispalyTenBestScore/useDispalyTenBestScore';
-
+import {ScaledSheet} from 'react-native-size-matters';
 interface WinnerScreenProps {}
 /**
  * react function component that acting as the scond screan of the app
@@ -54,7 +54,8 @@ const WinnerScreen: React.FC<WinnerScreenProps> = () => {
     </View>
   );
 };
-const styles = StyleSheet.create({
+
+const styles = ScaledSheet.create({
   mainContainer: {
     height: '90%',
   },
@@ -64,8 +65,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   mainTableContainer: {
-    marginBottom: 20,
-    flex: 2,
+    paddingBottom: '20@ms',
+    maxHeight: '100%',
+    minHeight: '70%',
   },
   mainTableTitleContainer: {
     flexDirection: 'row',
@@ -73,21 +75,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mainTableBodyContainer: {
-    maxHeight: '80%',
+    maxHeight: '75%',
+
     justifyContent: 'center',
   },
   mainButtonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center',
   },
   button: {
     width: '75%',
     display: 'flex',
     alignItems: 'center',
-    paddingVertical: 14,
+    paddingVertical: '14@s',
     backgroundColor: '#ee5a24',
-    borderRadius: 10,
+    borderRadius: '10@s',
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: {
@@ -99,22 +101,21 @@ const styles = StyleSheet.create({
   },
 
   titleText: {
-    margin: 20,
-    maxWidth: 250,
-    fontSize: 20,
+    margin: '20@s',
+    maxWidth: '250@s',
+    fontSize: '20@s',
     fontFamily: 'ComicSansMSBold',
   },
   ErortitleText: {
-    marginTop: '40%',
     alignSelf: 'center',
-    fontSize: 20,
+    paddingTop: '40@ms',
+    fontSize: '20@s',
     fontFamily: 'ComicSansMSBold',
   },
   titleTextTitle: {
     color: 'red',
-    margin: 24,
-    paddingTop: 20,
-    fontSize: 25,
+    paddingTop: '40@ms',
+    fontSize: '22@s',
     fontFamily: 'ComicSansMSBold',
   },
   text: {

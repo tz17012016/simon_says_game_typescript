@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Dimensions, useColorScheme} from 'react-native';
+import {View, Dimensions, useColorScheme} from 'react-native';
 import darkMode from '../../../../styles/darkMode';
+import {ScaledSheet} from 'react-native-size-matters';
 
 interface UiContainerViewProps {}
 /**
@@ -30,7 +31,7 @@ const UiContainerView: React.FC<UiContainerViewProps> = ({children}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
     position: 'relative',
@@ -62,8 +63,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     borderRadius: 20,
     alignSelf: 'center',
-    paddingHorizontal: 14,
-    paddingBottom: 30,
+    paddingHorizontal: '14@ms',
+    paddingBottom: '30@ms',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

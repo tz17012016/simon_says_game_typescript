@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import {OnPressEvent} from '../../../../app/hooks/DispalyTenBestScore/types/types';
+import {ScaledSheet} from 'react-native-size-matters';
 interface StartButtonProps {
   startHandle: OnPressEvent;
 }
@@ -20,10 +21,10 @@ const StartButton: React.FC<StartButtonProps> = ({startHandle}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   button: {
-    width: 100,
-    height: 100,
+    width: '100@ms',
+    height: '100@ms',
     borderWidth: 2,
     backgroundColor: 'midnightblue',
     position: 'absolute',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: '#fff',
-    fontSize: 25,
+    fontSize: '25@s',
     textAlign: 'center',
   },
 });

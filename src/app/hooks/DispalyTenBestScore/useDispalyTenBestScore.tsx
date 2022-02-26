@@ -1,14 +1,15 @@
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Text, View, StyleSheet, FlatList} from 'react-native';
+import {Text, View, FlatList} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getTenBestScores} from '../../../utils/util';
 import {displayActionCreators} from '../../redux/actions/index';
-import {User, Users} from '../../redux/types/types';
+import {Users} from '../../redux/types/types';
 import {TabParamsList} from '../../Routes/Types/Types';
 import {OnPress, RenderUi, Ui} from './types/types';
+import {ScaledSheet} from 'react-native-size-matters';
 /**
  * react custom hook that display return
  * a flatlist tsx component of the best 10 score players
@@ -61,15 +62,15 @@ const useTenBestScore = () => {
 
   return UseTenBestScore;
 };
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   mainContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#ccccff',
     borderRadius: 10,
-    marginTop: 10,
-    padding: 5,
+    marginTop: '10@ms',
+    padding: '5@ms',
   },
   InnerContainer: {
     justifyContent: 'center',

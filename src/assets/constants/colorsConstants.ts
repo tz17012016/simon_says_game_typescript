@@ -1,4 +1,4 @@
-import {Colors} from '../../src/app/redux/types/types';
+import {Colors} from '../../app/redux/types/types';
 
 export const ColorsArr: Colors = [
   {

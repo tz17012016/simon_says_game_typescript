@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Pressable, GestureResponderEvent} from 'react-native';
+import {Pressable, GestureResponderEvent} from 'react-native';
 import useSound from 'react-native-use-sound';
 import {Color} from '../../../../app/redux/types/types';
+import {ScaledSheet} from 'react-native-size-matters';
 
 interface ColorCradViewProps {
   color: Color;
@@ -58,7 +59,9 @@ const ColorCradView: React.FC<ColorCradViewProps> = ({
   }, [isPlaying, soundName]);
   //the color to be flashe
   let tempFlashColor: any =
-    flashColor === color.value ? flashColor : {backgroundColor: color.color};
+    flashColor === color.value
+      ? {backgroundColor: flashColor}
+      : {backgroundColor: color.color};
 
   return (
     <Pressable
@@ -68,14 +71,14 @@ const ColorCradView: React.FC<ColorCradViewProps> = ({
     />
   );
 };
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   button: {
-    width: 135,
-    height: 135,
+    width: '135@ms',
+    height: '135@ms',
     borderWidth: 2,
     elevation: 5,
+    opacity: 0.8,
     shadowColor: '#000',
-    opacity: 0.7,
     shadowOffset: {
       width: 2,
       height: 2,

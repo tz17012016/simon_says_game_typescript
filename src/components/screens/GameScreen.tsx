@@ -1,17 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import useSound from 'react-native-use-sound';
-
+import {ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
-import {soundObj} from '../../../assets/sound/soundObj';
-import {SoundObj} from '../../../assets/sound/types/types';
+import {soundObj} from '../../assets/sound/soundObj';
+import {SoundObj} from '../../assets/sound/types/types';
 import playerReduser from '../../app/hooks/customReducers/player/playerReduser';
 import {
+  InitPlay,
   initPlay,
+  PlayerActions,
   PLAYER_ACTION_TYPES,
 } from '../../app/hooks/customReducers/player/types/types';
 import useResetGame from '../../app/hooks/ResetGame/useResetGame';
-import {ColorsArr} from '../../../assets/constants/colorsConstants';
+import {ColorsArr} from '../../assets/constants/colorsConstants';
 import StartButton from '../features/ui/Button/StartButton';
 import ColorCradView from '../features/ui/ColorCrad/ColorCradView';
 import ModleView from '../features/ui/Modle/ModleView';
@@ -32,7 +34,9 @@ const GameScreen: React.FC<GameScreenProps> = () => {
    */
 
   //player reduser
-  const [state, dispatch] = React.useReducer(playerReduser, initPlay);
+  const [state, dispatch] = React.useReducer<
+    React.Reducer<InitPlay, PlayerActions>
+  >(playerReduser, initPlay);
   //redux game on or of state
   const {isOn = false} = useSelector(state => ({
     ...state.displayState,
@@ -74,7 +78,13 @@ const GameScreen: React.FC<GameScreenProps> = () => {
     data.isPlaying ? pause() : play();
   };
   //if the ColorCradView butoun will be Disable if its the user tourn or not
-  const Disable: boolean = state.isDisplay && state.userPlay ? true : false;
+  const Disable: boolean =
+    state.isDisplay === false && state.userPlay === true ? false : true;
+  console.log('Disable', Disable);
+  console.log(
+    'state.isDisplay === false && state.userPlay === true',
+    state.isDisplay === false && state.userPlay === true,
+  );
 
   //////////////////////////////////////////////////////////////////////////////////
   /**
@@ -173,7 +183,7 @@ const GameScreen: React.FC<GameScreenProps> = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   gameContainer: {
     height: '90%',
   },
@@ -190,9 +200,11 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   colorCardContainer: {
-    maxWidth: 270,
-    opacity: 0.8,
+    maxWidth: '273@ms',
+    borderWidth: 1,
+    borderColor: '#ccccff',
     backgroundColor: '#ccccff',
+
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -209,8 +221,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'red',
-    paddingTop: 10,
-    fontSize: 25,
+    paddingTop: '10@ms',
+    fontSize: '25@s',
     textAlign: 'center',
     fontFamily: 'ComicSansMSBold',
   },

@@ -1,6 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {InitPlay} from '../../../../app/hooks/customReducers/player/types/types';
+import {ScaledSheet} from 'react-native-size-matters';
 interface ScoreViewProps {
   score: InitPlay['score'];
 }
@@ -18,10 +19,10 @@ const ScoreView: React.FC<ScoreViewProps> = ({score}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
-    width: 100,
-    height: 100,
+    width: '100@ms',
+    height: '100@ms',
     borderWidth: 2,
     backgroundColor: 'midnightblue',
     position: 'absolute',
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
   containerTitle: {
     color: '#fff',
-    fontSize: 25,
+    fontSize: '25@s',
     textAlign: 'center',
   },
 });

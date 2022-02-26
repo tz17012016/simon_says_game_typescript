@@ -1,5 +1,5 @@
 import {PLAYER_ACTION_TYPES} from '../app/hooks/customReducers/player/types/types';
-import {ColorsArr} from '../../assets/constants/colorsConstants';
+import {ColorsArr} from '../assets/constants/colorsConstants';
 import {Color, Colors, Users} from '../app/redux/types/types';
 import {
   CardClickHandle,
@@ -141,21 +141,15 @@ export const cardClickHandle: CardClickHandle = async (
     const lastColor = copyUserColors.pop();
     const newFlashColor: Color = findByColor(color, ColorsArr);
     setFlashColor(newFlashColor.value);
-    //if the user lost the game
-    if (color !== lastColor) {
-      //set the user his finele score before the game ends
-      setSuccess(false);
-      setIsPlaying(true);
-      await timeout(1000);
-      setFlashColor('');
-      setIsPlaying(false);
-      dispatch({
-        type: PLAYER_ACTION_TYPES.SET_USER_FINISH_SCORE,
-        payload: state.colors.length,
-      });
-    }
     //if the user steal playing and his winning
     if (color === lastColor) {
+      //get all the colors that in the array
+      if (copyUserColors.length) {
+        dispatch({
+          type: PLAYER_ACTION_TYPES.SET_USER_COLORS,
+          payload: copyUserColors,
+        });
+      }
       //set the score of the user and get the user to the next level
       if (!copyUserColors.length) {
         await timeout(1000);
@@ -173,13 +167,19 @@ export const cardClickHandle: CardClickHandle = async (
         dispatch({type: PLAYER_ACTION_TYPES.SET_USER_COLORS_RESET});
         await timeout(2000);
       }
-      //get all the colors that in the array
-      if (copyUserColors.length) {
-        dispatch({
-          type: PLAYER_ACTION_TYPES.SET_USER_COLORS,
-          payload: copyUserColors,
-        });
-      }
+    }
+    //if the user lost the game
+    if (color !== lastColor) {
+      //set the user his finele score before the game ends
+      setSuccess(false);
+      setIsPlaying(true);
+      await timeout(1000);
+      setFlashColor('');
+      setIsPlaying(false);
+      dispatch({
+        type: PLAYER_ACTION_TYPES.SET_USER_FINISH_SCORE,
+        payload: state.colors.length,
+      });
     }
     //open the modle
     await timeout(1000);

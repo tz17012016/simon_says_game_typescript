@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -15,6 +14,7 @@ import {InitPlay} from '../../../../app/hooks/customReducers/player/types/types'
 import {OnPress} from '../../../../app/hooks/DispalyTenBestScore/types/types';
 import {winnerActionCreators} from '../../../../app/redux/actions';
 import darkMode from '../../../../styles/darkMode';
+import {ScaledSheet} from 'react-native-size-matters';
 
 interface ModleViewProps {
   showModal: boolean;
@@ -33,7 +33,7 @@ interface ModleViewProps {
  * @returns a form modle component that the user can enter
  *  his/her name into winner list
  */
-import useAutoFocusInputs from 'use-auto-focus-inputs';
+// import useAutoFocusInputs from 'use-auto-focus-inputs';
 const ModleView: React.FC<ModleViewProps> = ({
   showModal,
   setShowModal,
@@ -43,7 +43,7 @@ const ModleView: React.FC<ModleViewProps> = ({
   const dispatch = useDispatch();
   const {setUserData} = bindActionCreators(winnerActionCreators, dispatch);
   const colorScheme = useColorScheme();
-  const getAutoFocusableInputProps = useAutoFocusInputs();
+  // const getAutoFocusableInputProps = useAutoFocusInputs();
   const [name, setName] = React.useState<string>('');
 
   //send the new user to the redux store
@@ -81,13 +81,26 @@ const ModleView: React.FC<ModleViewProps> = ({
             <View style={styles.inputBox}>
               <Text style={styles.inputLabel}>Player Name</Text>
               <TextInput
+                style={colorScheme == 'light' ? styles.input : darkMode.input}
+                placeholder="Your Name..."
+                value={name}
+                autoCapitalize="words"
+                clearTextOnFocus={true}
+                maxLength={20}
+                autoFocus={true}
+                returnKeyType="done"
+                textAlign="center"
+                onChangeText={setName}
+                textContentType="name"
+              />
+              {/* <TextInput
                 {...getAutoFocusableInputProps({
                   style: colorScheme == 'light' ? styles.input : darkMode.input,
                   placeholder: 'Your Name...',
                   value: name,
                   onChangeText: setName,
                 })}
-              />
+              /> */}
             </View>
             <TouchableOpacity
               style={styles.ModleButton}
@@ -101,7 +114,7 @@ const ModleView: React.FC<ModleViewProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
     position: 'relative',
@@ -133,8 +146,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     borderRadius: 20,
     alignSelf: 'center',
-    paddingHorizontal: 14,
-    paddingBottom: 30,
+    paddingHorizontal: '14@s',
+    paddingBottom: '30@s',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -147,42 +160,42 @@ const styles = StyleSheet.create({
   ModleTitleText: {
     textAlign: 'center',
     fontFamily: 'ComicSansMSBold',
-    fontSize: 26,
-    marginTop: 10,
+    fontSize: '22@s',
+    marginTop: '10@s',
   },
   hr: {
     width: '100%',
-    height: 2,
+    height: ' 2@s',
     backgroundColor: '#444',
-    marginTop: 6,
+    marginTop: ' 6@s',
   },
   inputBox: {
-    marginTop: 10,
+    marginTop: '10@s',
   },
   inputLabel: {
-    fontSize: 18,
+    fontSize: '18@s',
     marginBottom: 6,
     fontFamily: 'ComicSansMSBold',
   },
   input: {
     width: '100%',
-    height: 40,
+    height: '40@s',
     fontFamily: 'ComicSansMSBold',
     backgroundColor: '#dfe4ea',
     borderRadius: 4,
-    paddingHorizontal: 10,
+    paddingHorizontal: '10@s',
   },
   ModleButton: {
     backgroundColor: '#ff4757',
-    marginTop: 10,
-    paddingVertical: 10,
+    marginTop: '10@s',
+    paddingVertical: '10@s',
     borderRadius: 4,
   },
   ModleButtonText: {
     color: '#fff',
     textAlign: 'center',
     fontFamily: 'ComicSansMSBold',
-    fontSize: 20,
+    fontSize: '17@s',
   },
   score: {
     color: 'red',
