@@ -11,6 +11,7 @@ The technologies that used in this project:
 - React-navigation v5.
 - React-native-sound
 - React-native-use-sound-hook
+- react-native-size-matters
 
 # Features
 
