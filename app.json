@@ -4,7 +4,7 @@
   "displayName": "Simon Says Game",
   "description": "A Simon Says Game",
   "sdkVersion": "30.0.2",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "ios": {
     "bundeleIdentifier": "com.tz17012016.simonsaysgame"
   },

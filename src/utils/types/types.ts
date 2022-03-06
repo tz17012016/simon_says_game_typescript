@@ -35,6 +35,10 @@ export type CardClickHandle = (
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>,
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>,
+  setIsSimonPlay: React.Dispatch<React.SetStateAction<boolean>>,
+  isSimonPlay: boolean,
+  ms: number,
+  setMs: React.Dispatch<React.SetStateAction<number>>,
 ) => Promise<void>;
 export type DisplayColors = (
   state: InitPlay,
@@ -55,6 +59,8 @@ export type DisplayColors = (
       }
   >,
   setFlashColor: React.Dispatch<React.SetStateAction<string>>,
+  setIsSimonPlay: React.Dispatch<React.SetStateAction<boolean>>,
+  ms: number,
 ) => Promise<void>;
 export type RunSimonColors = (
   dispatch: React.Dispatch<{
@@ -69,3 +75,9 @@ export type GetArrRevers = (arr: any) => any;
 
 export type FindByColor = (color: Color, arr: Colors) => Color | any;
 export type Timeout = (ms: number) => any;
+export type ChangeMsTimeOut = (
+  ms: number,
+  setMs: React.Dispatch<React.SetStateAction<number>>,
+  arrLength: number,
+) => void;
+export type HandleError = (error: Error, isFatal: boolean) => void;

@@ -1,13 +1,16 @@
 import {PLAYER_ACTION_TYPES} from '../app/hooks/customReducers/player/types/types';
 import {ColorsArr} from '../assets/constants/colorsConstants';
 import {Color, Colors, Users} from '../app/redux/types/types';
+
 import {
   CardClickHandle,
+  ChangeMsTimeOut,
   DisplayColors,
   FindByColor,
   GetArrRevers,
   GetRandomColorByIndex,
   GetTenBestScores,
+  HandleError,
   RunSimonColors,
   Timeout,
 } from './types/types';
@@ -35,10 +38,8 @@ export const findByColor: FindByColor = (color, arr) => {
  * @param arr
  * @returns a new array in reverse order
  */
-export const getArrRevers: GetArrRevers = arr => {
-  const newArr = [...arr].reverse();
-  return newArr;
-};
+export const getArrRevers: GetArrRevers = arr => [...[...arr].reverse()];
+
 /**
  * A function that receives an array of colors and it randomly selects
  * an object of color and returns a new array with the new random object
@@ -74,6 +75,17 @@ export const runSimonColors: RunSimonColors = (dispatch, state) => {
   dispatch({type: PLAYER_ACTION_TYPES.SET_SIMON_COLORS, payload: copyColors});
 };
 /**
+ * Function to set the ms for the timeout function,
+ * this function will reduce the ms by 50 ms every successful
+ * run dounn until it reach 100 ms
+ * @param ms
+ * @param setMs
+ * @param arrLength
+ */
+const changeMsTimeOut: ChangeMsTimeOut = (ms, setMs, arrLength) => {
+  arrLength > 0 && ms > 100 ? setMs(ms - 50) : null;
+};
+/**
  * Function that gets state and dispatch and setFlashColor, The function goes
  * through the whole color array of simon's and finds the color to flash,
  * it's flash it with a timeout of 1000 ms and then it disappears,
@@ -82,20 +94,25 @@ export const runSimonColors: RunSimonColors = (dispatch, state) => {
  * @param state
  * @param dispatch
  * @param setFlashColor
+ * @param setIsSimonPlay,
+ * @param ms
  */
 export const displayColors: DisplayColors = async (
   state,
   dispatch,
   setFlashColor,
+  setIsSimonPlay,
+  ms,
 ) => {
   const {colors} = state;
+  await timeout(ms);
   for (let i = 0; i < colors.length; i++) {
     let color = colors[i];
     const newFlashColor: Color = findByColor(color, ColorsArr);
     setFlashColor(newFlashColor.value);
-    await timeout(1000);
+    await timeout(ms);
     setFlashColor('');
-    await timeout(1000);
+    await timeout(ms);
     //chack if this is the last color
     if (i === colors.length - 1) {
       const copyColors: Colors = getArrRevers(colors);
@@ -107,7 +124,9 @@ export const displayColors: DisplayColors = async (
       });
     }
   }
+  setIsSimonPlay(false);
 };
+
 /**
  * Function that gets state and color dispatch and setFlashColor and setShowModal
  *  and setSuccess and setIsPlaying, The function takes the colors out of the user's
@@ -125,6 +144,10 @@ export const displayColors: DisplayColors = async (
  * @param setShowModal
  * @param setSuccess
  * @param setIsPlaying
+ * @param setIsSimonPlay
+ * @param isSimonPlay
+ * @param ms
+ * @param setMs
  */
 export const cardClickHandle: CardClickHandle = async (
   color,
@@ -134,9 +157,13 @@ export const cardClickHandle: CardClickHandle = async (
   setShowModal,
   setSuccess,
   setIsPlaying,
+  setIsSimonPlay,
+  isSimonPlay,
+  ms,
+  setMs,
 ) => {
   //if it is the user now playing
-  if (!state.isDisplay && state.userPlay) {
+  if (!state.isDisplay && state.userPlay && !isSimonPlay) {
     const copyUserColors = [...state.userColors];
     const lastColor = copyUserColors.pop();
     const newFlashColor: Color = findByColor(color, ColorsArr);
@@ -152,10 +179,10 @@ export const cardClickHandle: CardClickHandle = async (
       }
       //set the score of the user and get the user to the next level
       if (!copyUserColors.length) {
-        await timeout(1000);
+        await timeout(ms);
         setIsPlaying(true);
         setFlashColor('');
-        await timeout(1000);
+        await timeout(ms);
         dispatch({type: PLAYER_ACTION_TYPES.DISPLAY_ON});
         dispatch({type: PLAYER_ACTION_TYPES.SET_USER_PLAY_OFF});
         dispatch({
@@ -164,26 +191,39 @@ export const cardClickHandle: CardClickHandle = async (
         });
         setSuccess(true);
         setIsPlaying(false);
+        setIsSimonPlay(true);
         dispatch({type: PLAYER_ACTION_TYPES.SET_USER_COLORS_RESET});
-        await timeout(2000);
+        changeMsTimeOut(ms, setMs, state.colors.length);
+        await timeout(1000);
       }
     }
-    //if the user lost the game
+
+    // if the user lost the game
     if (color !== lastColor) {
       //set the user his finele score before the game ends
       setSuccess(false);
       setIsPlaying(true);
-      await timeout(1000);
+      await timeout(ms);
       setFlashColor('');
       setIsPlaying(false);
+      setIsSimonPlay(true);
       dispatch({
         type: PLAYER_ACTION_TYPES.SET_USER_FINISH_SCORE,
         payload: state.colors.length,
       });
     }
-    //open the modle
-    await timeout(1000);
+    // open the modle
+    await timeout(ms);
     setFlashColor('');
     setShowModal(true);
   }
+};
+/**
+ * Function that gets error and isFatal and return in
+ * production mod the error massege to the console or a server
+ * @param error
+ * @param isFatal
+ */
+export const handleError: HandleError = (error, isFatal) => {
+  console.log(error, isFatal);
 };

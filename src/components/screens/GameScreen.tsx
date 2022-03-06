@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import useSound from 'react-native-use-sound';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -18,10 +18,38 @@ import StartButton from '../features/ui/Button/StartButton';
 import ColorCradView from '../features/ui/ColorCrad/ColorCradView';
 import ModleView from '../features/ui/Modle/ModleView';
 import ScoreView from '../features/ui/Score/ScoreView';
-
+import {
+  setJSExceptionHandler,
+  setNativeExceptionHandler,
+} from 'react-native-exception-handler';
+/**
+ * Function that gets error and isFatal and return in
+ * production mod the error massege to the console
+ * @param error
+ * @param isFatal
+ */
+setJSExceptionHandler((error, isFatal) => {
+  console.log('caught global error');
+  handleError(error, isFatal);
+}, true);
+/**
+ * Function that gets error  and return in
+ * production mod the error massege to the console or a server
+ * @param errorString
+ */
+setNativeExceptionHandler(errorString => {
+  console.log('errorString', errorString);
+});
 interface GameScreenProps {}
 
-import {runSimonColors, displayColors, cardClickHandle} from '../../utils/util';
+import {
+  runSimonColors,
+  displayColors,
+  cardClickHandle,
+  handleError,
+} from '../../utils/util';
+import {Color} from '../../app/redux/types/types';
+import {Ui} from './types/types';
 /**
  * react function component that acting as the main screan of the app
  * this screan have the game component and the state that neded in order to play
@@ -46,9 +74,13 @@ const GameScreen: React.FC<GameScreenProps> = () => {
   //show Modal
   const [showModal, setShowModal] = React.useState<boolean>(false);
   //toggle if user success or not
-  const [success, setSuccess] = React.useState(true);
+  const [success, setSuccess] = React.useState<boolean>(true);
   //toggle if user is still Playing or not
   const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
+  //toggle if simon is still Playing or not
+  const [isSimonPlay, setIsSimonPlay] = React.useState<boolean>(true);
+  //set how meny sconds the timeout function will run
+  const [ms, setMs] = React.useState<number>(700);
   //sound name
   const [soundName] = React.useState<SoundObj>(soundObj);
   //useSound hooks
@@ -64,8 +96,8 @@ const GameScreen: React.FC<GameScreenProps> = () => {
     dispatch,
     setSuccess,
     setShowModal,
+    setMs,
   );
-
   /////////////////////////////////////////////////////////////////////////////////
   /**
    * Methods
@@ -79,13 +111,9 @@ const GameScreen: React.FC<GameScreenProps> = () => {
   };
   //if the ColorCradView butoun will be Disable if its the user tourn or not
   const Disable: boolean =
-    state.isDisplay === false && state.userPlay === true ? false : true;
-  console.log('Disable', Disable);
-  console.log(
-    'state.isDisplay === false && state.userPlay === true',
-    state.isDisplay === false && state.userPlay === true,
-  );
-
+    state.isDisplay === false && state.userPlay === true && isSimonPlay !== true
+      ? false
+      : true;
   //////////////////////////////////////////////////////////////////////////////////
   /**
    * LifeCycle Methods
@@ -107,7 +135,7 @@ const GameScreen: React.FC<GameScreenProps> = () => {
    * to pick a random color and add it to the syimons colors array
    */
   React.useEffect(() => {
-    isOn && state.isDisplay && runSimonColors(dispatch, state);
+    isOn && state.isDisplay ? runSimonColors(dispatch, state) : null;
   }, [isOn, state.isDisplay]);
 
   /**
@@ -117,10 +145,9 @@ const GameScreen: React.FC<GameScreenProps> = () => {
    * and insert the colors in revers order from the simon's array to the user array
    */
   React.useEffect(() => {
-    isOn &&
-      state.isDisplay &&
-      state.colors.length &&
-      displayColors(state, dispatch, setFlashColor);
+    isOn && state.isDisplay && state.colors.length
+      ? displayColors(state, dispatch, setFlashColor, setIsSimonPlay, ms)
+      : null;
   }, [isOn, state.isDisplay, state.colors.length]);
 
   /**
@@ -134,25 +161,29 @@ const GameScreen: React.FC<GameScreenProps> = () => {
   /**
    * render the colors arrays to the UI
    */
-  const renderColorCrad = ColorsArr.map(color => (
+
+  const ui: Ui = ({item}) => (
     <ColorCradView
-      key={color.id}
-      color={color}
+      color={item}
       flashColor={flashColor}
       Disable={Disable}
       onPress={() => {
         cardClickHandle(
-          color,
+          item,
           state,
           dispatch,
           setFlashColor,
           setShowModal,
           setSuccess,
           setIsPlaying,
+          setIsSimonPlay,
+          isSimonPlay,
+          ms,
+          setMs,
         );
       }}
     />
-  ));
+  );
   //////////////////////////////////////////////////////////////////////////////////
   /**
    * render UI
@@ -164,7 +195,16 @@ const GameScreen: React.FC<GameScreenProps> = () => {
       </View>
       <View style={styles.gameContainerAliment}>
         <View style={styles.colorCardContainer}>
-          {ColorsArr && renderColorCrad}
+          {ColorsArr && (
+            <FlatList
+              data={ColorsArr}
+              keyExtractor={(item: Color) => item.id.toString()}
+              initialNumToRender={4}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              renderItem={ui}
+            />
+          )}
         </View>
         {isOn && !state.isDisplay && !state.userPlay && state.score ? (
           <ModleView
@@ -172,12 +212,15 @@ const GameScreen: React.FC<GameScreenProps> = () => {
             setShowModal={setShowModal}
             closeHandle={closeHandle}
             score={state.score}
+            setMs={setMs}
           />
         ) : null}
-        {!isOn && !state.score && <StartButton startHandle={startHandle} />}
-        {isOn && (state.isDisplay || state.userPlay) && (
+        {!isOn && !state.score ? (
+          <StartButton startHandle={startHandle} />
+        ) : null}
+        {isOn && (state.isDisplay || state.userPlay) ? (
           <ScoreView score={state.score} />
-        )}
+        ) : null}
       </View>
     </View>
   );

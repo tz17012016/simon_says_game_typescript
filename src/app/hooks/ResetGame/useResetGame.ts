@@ -1,4 +1,3 @@
-import React from 'react';
 import {TabParamsList} from '../../Routes/Types/Types';
 import {useDispatch} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -7,6 +6,7 @@ import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 import {displayActionCreators} from '../../redux/actions/index';
 import {PLAYER_ACTION_TYPES} from '../customReducers/player/types/types';
 import {OnPress} from '../DispalyTenBestScore/types/types';
+import {UseResetGame} from './types/typse';
 /**
  * react custom hook that react dispatch,setSuccess,setShowModal function
  * the function dispatch an actions of start game or close game as nedded,
@@ -16,13 +16,15 @@ import {OnPress} from '../DispalyTenBestScore/types/types';
  * @param dispatch
  * @param setSuccess
  * @param setShowModal
+ * @param setMs
  * @returns startHandle and  closeHandle to the component that
  * need those functions
  */
-const useResetGame = (
-  dispatch: React.Dispatch<{type: PLAYER_ACTION_TYPES.PLAYER_RESET}>,
-  setSuccess: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+const useResetGame: UseResetGame = (
+  dispatch,
+  setSuccess,
+  setShowModal,
+  setMs,
 ) => {
   const dispatchRedux = useDispatch();
   const navigation = useNavigation<BottomTabNavigationProp<TabParamsList>>();
@@ -44,6 +46,7 @@ const useResetGame = (
     setGameOff(false);
     setShowModal(false);
     setSuccess(true);
+    setMs(700);
     dispatch({type: PLAYER_ACTION_TYPES.PLAYER_RESET});
     navigation.navigate('WinnerList');
   };

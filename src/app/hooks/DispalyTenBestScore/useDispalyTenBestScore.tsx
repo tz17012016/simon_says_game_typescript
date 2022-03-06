@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getTenBestScores} from '../../../utils/util';
 import {displayActionCreators} from '../../redux/actions/index';
-import {Users} from '../../redux/types/types';
+import {User, Users} from '../../redux/types/types';
 import {TabParamsList} from '../../Routes/Types/Types';
 import {OnPress, RenderUi, Ui} from './types/types';
 import {ScaledSheet} from 'react-native-size-matters';
@@ -41,7 +41,7 @@ const useTenBestScore = () => {
     return (
       <FlatList
         data={tempScores}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item: User) => item.id.toString()}
         initialNumToRender={5}
         showsVerticalScrollIndicator={false}
         renderItem={ui}
