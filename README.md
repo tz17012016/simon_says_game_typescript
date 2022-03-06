@@ -1,7 +1,6 @@
-# Simon Says Game react-native-Typescript 
+# Simon Says Game react-native-Typescript
 
-
-## Simon Says Game 
+## Simon Says Game
 
 The technologies that used in this project:
 
@@ -15,47 +14,48 @@ The technologies that used in this project:
 
 # Features
 
-- the app support Darke mod on the device.
-- simon game.
-- list  of the 10 best results  in the winner bord
-
+- Simon game.
+- list of the 10 best results in the winner bord
+- make the card flash fast according to the level the user is currently on.
+- the app supports Darke mod on the device.
 
 ## Installation
+
 ```
-npm instal
+npm install
 
 yarn
 
 ```
-## Runing the App in Debug Mode On Android Or Ios
 
-### Android: 
+## Running the App in Debug Mode On Android Or Ios
+
+### Android:
+
 ```
 react-native run-android
 ```
+
 ### Ios:
+
 ```
 react-native run-ios
 ```
 
-
 ## Build
 
-Build the app by using the raect native cli
+Build the app by using the react-native CLI
 
 ```
 cd android && gradlew.bat clean && gradlew.bat assembleRelease
 ```
 
-# preview of the app screns:
-
+# preview of the app screens:
 
 # Game Screen
 
 ![image](https://user-images.githubusercontent.com/71942613/155583732-3d7ea507-e8af-4abd-84ed-84fb0d732cb5.png)
 
-
 # Winners Screen
 
 ![image](https://user-images.githubusercontent.com/71942613/155583656-09db2fc8-ff0c-4039-895d-6287be1c05c7.png)
-
