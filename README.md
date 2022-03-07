@@ -4,8 +4,7 @@
 
 🤴🕵️‍♀️King Simon wants to know How long a sequence can you remember....? 🤴🕵️‍♀️
 
-
-The technologies that used in this project:
+# The technologies that used in this project:
 
 - React Native CLI.
 - Typescript, hooks.
