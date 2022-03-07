@@ -1,6 +1,9 @@
 # Simon Says Game react-native-Typescript
 
-## Simon Says Game
+# About
+
+🤴🕵️‍♀️King Simon wants to know How long a sequence can you remember....? 🤴🕵️‍♀️
+
 
 The technologies that used in this project:
 
