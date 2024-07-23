@@ -17,7 +17,7 @@
 # Features
 
 - Simon game.
-- list of the 10 best results in the winner bord
+- list of the 10 best results in the winner board
 - make the card flash fast according to the level the user is currently on.
 - the app supports Darke mod on the device.
 
